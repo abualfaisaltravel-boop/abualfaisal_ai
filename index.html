@@ -46,6 +46,7 @@
     .hide{display:none!important}#toast{position:fixed;bottom:23px;left:50%;transform:translateX(-50%);background:#182549;color:white;padding:11px 18px;border-radius:12px;box-shadow:0 10px 25px #0003;font-size:12px;z-index:20;max-width:90%;text-align:center}
     @media(max-width:700px){.layout{grid-template-columns:1fr}.panel{padding:18px}.steps{grid-template-columns:1fr}.tag{font-size:10px}.brand strong{font-size:15px}.nav button{font-size:12px}h1{margin-top:26px}.top{padding-bottom:37px}}
   </style>
+  <link rel="stylesheet" href="assets/studio.css?v=2">
 </head>
 <body>
   <header class="top"><div class="wrap">
@@ -55,8 +56,100 @@
     <div class="chips"><span>سرد قصصي واضح</span><span>صيغة 9:16</span><span>بدون مفاتيح API</span><span>ملفاتك لا تُرسل للخادم</span></div>
   </div></header>
   <main class="wrap main">
-    <nav class="nav" aria-label="الأقسام"><button type="button" class="active" data-tab="studio">استوديو الريلز</button><button type="button" data-tab="bridge">ChatGPT + Claude</button><button type="button" data-tab="checklist">فحص الإعلان</button></nav>
-    <section id="studio" class="layout">
+    <nav class="nav" aria-label="الأقسام"><button type="button" class="active" data-tab="production">إنتاج إعلان كامل</button><button type="button" data-tab="studio">استوديو الريلز</button><button type="button" data-tab="bridge">ChatGPT + Claude</button><button type="button" data-tab="checklist">فحص الإعلان</button></nav>
+
+    <!-- Full creative-production workspace, served without external APIs -->
+    <section id="production" class="prod-shell" aria-label="إنتاج إعلان متكامل">
+      <div class="prod-top">
+        <div>
+          <span class="prod-kicker">ABU ALFAISAL / CREATIVE PRODUCTION</span>
+          <h2>إنتاج إعلان من الفكرة إلى أوامر المشاهد</h2>
+          <p>سيناريو متسلسل، أربع لقطات قابلة للتحرير، وأوامر صور وفيديو مخصّصة لكل لقطة. جهّز المشروع على جوالك، ثم انسخه أو نزّله.</p>
+        </div>
+        <span class="prod-version">الإصدار 2.0 · بدون API</span>
+      </div>
+
+      <div class="prod-grid">
+        <form id="p-form" class="panel prod-form">
+          <div class="prod-block-head">
+            <div><span class="prod-kicker">01 / CREATIVE BRIEF</span><h2>إعداد الإعلان</h2><p>حدد الخدمة والمدة ونبرة القصة.</p></div>
+            <span class="prod-step">01</span>
+          </div>
+          <label for="p-service">خدمة أبو الفيصل</label>
+          <select id="p-service">
+            <option value="flights">حجز تذاكر الطيران</option>
+            <option value="students">رحلات الطلاب إلى الدراسة</option>
+            <option value="visa">التأشيرات ومتطلبات الدخول</option>
+            <option value="followup">متابعة الحجوزات والمستجدات</option>
+            <option value="umrah">برامج العمرة</option>
+            <option value="medical">تنسيق رحلات العلاج</option>
+          </select>
+          <label for="p-title">عنوان الإعلان (قابل للتعديل)</label>
+          <input id="p-title" maxlength="100" placeholder="عنوان الإعلان">
+          <div class="prod-row">
+            <div><label for="p-duration">مدة الريلز</label><select id="p-duration"><option value="20">20 ثانية</option><option value="22">22 ثانية</option><option value="15">15 ثانية</option><option value="30">30 ثانية</option></select></div>
+            <div><label for="p-platform">منصة النشر</label><select id="p-platform"><option value="reels">Instagram Reels</option><option value="tiktok">TikTok</option><option value="stories">Stories</option></select></div>
+          </div>
+          <div class="prod-row">
+            <div><label for="p-style">أسلوب الإخراج</label><select id="p-style"><option value="cinematic">واقعي سينمائي</option><option value="emotional">إنساني عاطفي</option><option value="documentary">واقعي وثائقي</option><option value="dynamic">إيقاع ديناميكي</option></select></div>
+            <div><label for="p-goal">هدف الإعلان</label><select id="p-goal"><option value="trust">بناء الثقة</option><option value="leads">زيادة الاستفسارات</option><option value="engagement">إكمال المشاهدة</option></select></div>
+          </div>
+          <label for="p-brief">ملاحظاتك الإبداعية الإضافية</label>
+          <textarea id="p-brief" maxlength="600" placeholder="مثل: ركّز على أهمية توقيت الوصول، مع مشاهد يمنية طبيعية. لا تُدخل بيانات حجوزات حقيقية."></textarea>
+          <label for="p-cta">عبارة الختام بعد اسم المكتب</label>
+          <input id="p-cta" maxlength="150" value="أرسل وجهتك وموعدك لنوضح لك الخيارات">
+          <button class="btn" type="submit" style="margin-top:17px">إنشاء سيناريو جديد <span aria-hidden="true">↗</span></button>
+          <div class="prod-actions">
+            <button class="btn alt" type="button" data-prod-action="save">حفظ المسودة</button>
+            <button class="btn alt" type="button" data-prod-action="export-json">تنزيل المشروع</button>
+          </div>
+          <p class="note">الحفظ محلي في متصفح جوالك؛ لا تُرسل بياناتك إلى خادمنا. لا تُدخل أسماء أو وثائق أو معلومات عملاء.</p>
+        </form>
+
+        <div class="panel prod-output">
+          <div class="prod-block-head">
+            <div><span class="prod-kicker">02 / STORYBOARD</span><h2>السيناريو والمشاهد</h2><p>يمكنك تعديل الوصف والعبارات وتوجيه الكاميرا.</p></div>
+            <span class="prod-step">02</span>
+          </div>
+          <div class="prod-summary">
+            <span class="prod-kicker">فكرة القصة</span>
+            <h3 id="p-preview-title">—</h3>
+            <p id="p-preview-hook" style="font-weight:700;color:#222345"></p>
+            <p id="p-preview-flow" style="white-space:pre-line"></p>
+            <div class="prod-badges">
+              <span id="p-preview-duration">20 ثانية</span><span id="p-preview-platform">Reels</span><span id="p-preview-goal">بناء الثقة</span><span id="p-scene-count">4 مشاهد مترابطة</span>
+            </div>
+          </div>
+          <div class="prod-toolbar">
+            <button type="button" class="btn alt" data-prod-action="copy-plan">نسخ السيناريو كاملًا</button>
+            <button type="button" class="btn ghost" data-prod-action="copy-all">نسخ حزمة الإنتاج</button>
+          </div>
+          <h3 class="prod-chapter">المشاهد الأربعة</h3>
+          <p class="prod-info">تتضمن كل لقطة وصفًا بصريًا ونص الشاشة وحركة الكاميرا وأمرًا منفصلًا للصورة وآخر للفيديو.</p>
+          <div id="p-shot-list" aria-live="polite"></div>
+
+          <div class="prod-end-card">
+            <span class="end-label">03 / END CARD</span>
+            <strong>أبو الفيصل للسفريات والسياحة</strong>
+            <p id="p-end-cta">أرسل وجهتك وموعدك لنوضح لك الخيارات</p>
+            <p style="direction:ltr;text-align:right" aria-label="هواتف المكتب">+967 771 974 697 &nbsp;·&nbsp; +967 781 478 444</p>
+            <small id="p-end-duration">آخر ثانيتين ضمن المشهد الأخير</small>
+          </div>
+          <div class="prod-guide"><strong>التنفيذ الواقعي:</strong> هذه الحزمة تُحضّر السيناريو وأوامر الصور والفيديو، ولا تُولّد ملفات صور أو MP4 مباشرة. استخدم الأوامر في خدمة توليد تدعمها، ثم اجمع اللقطات وأضف النص العربي في المونتاج.</div>
+          <h3 class="prod-chapter">04 / التسليم والتصدير</h3>
+          <p class="prod-info">انسخ الحزمة إلى ChatGPT أو Claude، أو نزّلها من جوالك لتحتفظ بها خارج الموقع.</p>
+          <div class="prod-buttons">
+            <button type="button" class="btn" data-prod-action="copy-all">نسخ كل أوامر الإنتاج</button>
+            <button type="button" class="btn alt" data-prod-action="copy-plan">نسخ السيناريو</button>
+            <button type="button" class="btn ghost" data-prod-action="export-txt">تنزيل ملف TXT</button>
+            <button type="button" class="btn ghost" data-prod-action="export-json">تنزيل ملف JSON</button>
+          </div>
+          <p id="p-status" class="prod-live" role="status" aria-live="polite">جاهز لإنشاء السيناريو</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="studio" class="layout hide">
       <div class="panel">
         <h2>01 / حضّر فكرة إعلانك</h2><p class="sub">اختر الخدمة والهدف، وستظهر قصة مقسمة إلى مشاهد قابلة للتعديل عبر أدوات الذكاء الاصطناعي.</p>
         <label for="service">الخدمة</label><select id="service">
@@ -91,7 +184,7 @@
         <div id="checks"></div><div class="actions"><button class="btn alt" type="button" id="reset">إعادة ضبط المراجعة</button></div>
       </div>
     </section>
-    <footer class="foot">أبو الفيصل للسفريات والسياحة · عدن، اليمن<br>محتوى تجريبي غير منشور؛ راجع أي معلومات تشغيل أو أسعار أو تأشيرات قبل اعتمادها.</footer>
+    <footer class="foot">أبو الفيصل للسفريات والسياحة · عدن، اليمن<br>القوالب والمشاهد إبداعية تجريبية، وليست تأكيدًا لمواعيد أو أسعار أو متطلبات دخول.</footer>
   </main><div id="toast" role="status" class="hide"></div>
   <script>
     (function(){
@@ -141,7 +234,7 @@
       function prompt(){return "أنت مدير إبداعي ومخرج إعلانات عربي. طوّر السيناريو التالي لصالح «أبو الفيصل للسفريات والسياحة» في عدن.\n\n"+storyboard()+"\n\nالتنفيذ المطلوب:\n- حافظ على قصة واحدة متسلسلة واضحة: بداية، حدث، حل، نتيجة.\n- صِف لكل لقطة التكوين والحركة والانتقال وطبيعة الضوء.\n- الشخصيات يمنية عربية محتشمة ومتسقة، واقعية بالكامل.\n- عمودي 9:16، موسيقى فقط دون حوار أو تعليق صوتي.\n- لغة النصوص عربية؛ لا نصوص مقروءة زائفة على شاشة الهاتف.\n- الهوية كحلي وبنفسجي داكن وذهبي وأبيض.\n- امنع الغروب والحقائب والخرائط والدبابيس ولقطة المسافر من الخلف.\n- لا توهم بإصدار تأشيرة مضمون أو سعر ثابت أو رحلات مؤكدة.\n- اقترح تحسينات مبتكرة دون تكرار أفكار تقليدية، ثم أخرج خطة تنفيذ قابلة للتطبيق.\n- اكتب النصوص النهائية والإرشادات كاملة بالعربية.\n- لا تزعم إنتاج ملف فيديو إذا لم تتوفر لديك أداة توليد فيديو فعلية."}
       function copy(t){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){toast("تم النسخ")}).catch(function(){fallback(t)})}else fallback(t)}
       function fallback(t){var x=document.createElement("textarea");x.value=t;x.style.position="fixed";x.style.opacity="0";document.body.appendChild(x);x.select();try{document.execCommand("copy");toast("تم النسخ")}catch(e){toast("تعذر النسخ، جرّب متصفحًا أحدث")}x.remove()}
-      document.querySelectorAll("[data-tab]").forEach(function(el){el.addEventListener("click",function(){var tab=el.dataset.tab;document.querySelectorAll("[data-tab]").forEach(function(a){a.classList.toggle("active",a===el)});["studio","bridge","checklist"].forEach(function(id){$(id).classList.toggle("hide",id!==tab)})})});
+      document.querySelectorAll("[data-tab]").forEach(function(el){el.addEventListener("click",function(){var tab=el.dataset.tab;document.querySelectorAll("[data-tab]").forEach(function(a){a.classList.toggle("active",a===el)});["production","studio","bridge","checklist"].forEach(function(id){$(id).classList.toggle("hide",id!==tab)})})});
       $("generate").addEventListener("click",function(){build();toast("تم تحديث السيناريو")});
       ["service","length","aim"].forEach(function(id){$(id).addEventListener("change",build)});
       $("context").addEventListener("change",build);
@@ -154,4 +247,5 @@
       build();renderChecks();
     })();
   </script>
+  <script src="assets/studio.js?v=2"></script>
 </body></html>
