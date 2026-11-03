@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111a3d">
+  <meta name="description" content="استوديو أبو الفيصل المجاني لتخطيط إعلانات السفر من الجوال">
+  <title>استوديو أبو الفيصل | Abu Alfaisal Studio</title>
+  <style>
+    :root{--ink:#111a3d;--plum:#251640;--gold:#d5af6f;--paper:#f6f5fa;--line:#e8e3ee;--text:#202238;--muted:#657086;--white:#fff;--green:#157e65}
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:var(--paper);color:var(--text);font:15px/1.75 "DIN Next LT Arabic","Noto Sans Arabic",Tahoma,Arial,sans-serif}
+    button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit}
+    .wrap{max-width:980px;margin:auto;padding:0 16px}
+    .top{background:linear-gradient(125deg,#101a3d 0%,#271641 100%);color:#fff;padding:24px 0 40px;border-radius:0 0 30px 30px}
+    .bar{display:flex;justify-content:space-between;align-items:center;gap:12px}.logo{width:46px;height:46px;border:1px solid #bda174;border-radius:15px;color:var(--gold);display:grid;place-items:center;font-size:25px;font-weight:800}
+    .brand{display:flex;gap:12px;align-items:center}.brand strong{display:block;font-size:18px;line-height:1.3}.brand small{color:#c7c5d8;font-size:12px}
+    .tag{font-size:11px;padding:6px 10px;border:1px solid #84749a;border-radius:99px;white-space:nowrap;color:#ebdfef}
+    h1{font-size:clamp(25px,4.5vw,38px);line-height:1.4;margin:30px 0 8px} .top p{color:#d6d1e1;margin:0;max-width:630px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.chips span{border:1px solid #7d718b;color:#eee5ee;padding:5px 12px;border-radius:30px;font-size:12px}
+    .main{margin-top:-19px;padding-bottom:50px;position:relative}
+    .nav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;background:white;border-radius:15px;box-shadow:0 10px 32px #15102712;padding:7px;margin-bottom:18px}
+    .nav button{border:0;background:transparent;padding:11px 4px;border-radius:10px;color:#62667a;font-size:13px;font-weight:700}.nav button.active{background:var(--ink);color:#fff}
+    .layout{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:19px;padding:21px;box-shadow:0 4px 18px #15102706}
+    h2{font-size:21px;margin:0 0 6px;color:var(--ink)}h3{margin:0 0 6px;font-size:16px;color:var(--ink)}
+    .sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+    label{display:block;font-size:12px;font-weight:700;color:#474760;margin:14px 0 6px}
+    select,input,textarea{display:block;width:100%;padding:12px 13px;border-radius:11px;border:1px solid #dcdce8;background:#fbfafd;color:var(--text);outline:none}
+    select:focus,input:focus,textarea:focus{border-color:#8874a6;box-shadow:0 0 0 3px #8874a622}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+    .btn{border:0;border-radius:12px;background:var(--ink);color:#fff;padding:12px 16px;font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+    .btn.alt{background:#f2edf5;color:var(--plum)}.btn.ghost{background:#fff;border:1px solid #ddd5e1;color:var(--ink)}
+    .btn:active{transform:translateY(1px)}
+    .resultTop{display:flex;justify-content:space-between;align-items:flex-start;gap:9px}.eyebrow{font-size:11px;letter-spacing:.5px;font-weight:800;color:#9b7843}
+    .story{background:linear-gradient(135deg,#f8f4eb,#f4f0f9);border:1px solid #ede1cf;border-radius:14px;padding:15px;margin:13px 0}
+    .story strong{font-size:17px;color:var(--ink)}.story p{font-size:13px;margin:4px 0 0;color:#59536a}
+    .scene{border-right:3px solid var(--gold);padding:4px 12px 5px 0;margin:13px 0 16px}
+    .scene .time{font-weight:700;color:#947047;font-size:11px}.scene p{margin:2px 0;font-size:13px}.scene .overlay{font-weight:700;color:var(--ink)}
+    .note{font-size:12px;color:#766983;background:#f7f4fa;padding:10px 12px;border-radius:12px;margin-top:14px}
+    .one{max-width:740px;margin:0 auto}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+    .step{border-radius:13px;background:#f7f5fa;padding:13px;font-size:12px}.step b{display:block;color:var(--plum);font-size:14px}
+    .links{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}.link{display:inline-flex;text-decoration:none;border:1px solid #dfd9ea;padding:10px 15px;border-radius:11px;font-weight:700;font-size:13px}
+    .check{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);font-size:14px}
+    .check input{width:19px;height:19px;margin:4px 0;accent-color:#1b805f;flex:none}.check:last-child{border-bottom:0}
+    .foot{font-size:12px;text-align:center;color:var(--muted);padding:30px 12px}
+    .hide{display:none!important}#toast{position:fixed;bottom:23px;left:50%;transform:translateX(-50%);background:#182549;color:white;padding:11px 18px;border-radius:12px;box-shadow:0 10px 25px #0003;font-size:12px;z-index:20;max-width:90%;text-align:center}
+    @media(max-width:700px){.layout{grid-template-columns:1fr}.panel{padding:18px}.steps{grid-template-columns:1fr}.tag{font-size:10px}.brand strong{font-size:15px}.nav button{font-size:12px}h1{margin-top:26px}.top{padding-bottom:37px}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="wrap">
+    <div class="bar"><div class="brand"><div class="logo">أ</div><div><strong>أبو الفيصل للسفريات والسياحة</strong><small>استوديو المحتوى الرقمي</small></div></div><span class="tag">نسخة مجانية • من الجوال</span></div>
+    <h1>الفكرة لها بداية.<br>والإعلان له نتيجة.</h1>
+    <p>أداة بسيطة لتجهيز ريلز عربية متماسكة، وتحويل السيناريو إلى تعليمات قابلة للاستخدام في ChatGPT أو Claude مجانًا.</p>
+    <div class="chips"><span>سرد قصصي واضح</span><span>صيغة 9:16</span><span>بدون مفاتيح API</span><span>ملفاتك لا تُرسل للخادم</span></div>
+  </div></header>
+  <main class="wrap main">
+    <nav class="nav" aria-label="الأقسام"><button type="button" class="active" data-tab="studio">استوديو الريلز</button><button type="button" data-tab="bridge">ChatGPT + Claude</button><button type="button" data-tab="checklist">فحص الإعلان</button></nav>
+    <section id="studio" class="layout">
+      <div class="panel">
+        <h2>01 / حضّر فكرة إعلانك</h2><p class="sub">اختر الخدمة والهدف، وستظهر قصة مقسمة إلى مشاهد قابلة للتعديل عبر أدوات الذكاء الاصطناعي.</p>
+        <label for="service">الخدمة</label><select id="service">
+          <option value="students">رحلات الطلاب إلى الدراسة</option><option value="flights">حجز تذاكر الطيران</option><option value="visa">التأشيرات والموافقات</option><option value="umrah">العمرة</option><option value="followup">متابعة الحجوزات</option>
+        </select>
+        <div class="two"><div><label for="length">المدة</label><select id="length"><option value="20">20 ثانية</option><option value="22">22 ثانية</option><option value="15">15 ثانية</option><option value="30">30 ثانية</option></select></div>
+        <div><label for="aim">الهدف</label><select id="aim"><option value="trust">بناء الثقة</option><option value="leads">زيادة الاستفسارات</option><option value="attention">رفع المشاهدة</option></select></div></div>
+        <label for="context">تفصيل اختياري (لا تكتب بيانات عملاء)</label><input id="context" maxlength="150" placeholder="مثال: التركيز على سفر الطلاب من جدة">
+        <div class="actions"><button type="button" class="btn" id="generate">تجهيز السيناريو</button><button type="button" class="btn alt" id="copyStoryboard">نسخ المشاهد</button></div>
+        <p class="note">هذه أداة قوالب إبداعية، وليست مولّد فيديو أو ذكاء اصطناعي مستقلًا. يمكنك تطوير كل فكرة معنا أو عبر Claude Free.</p>
+      </div>
+      <div class="panel" aria-live="polite">
+        <div class="resultTop"><div><div class="eyebrow">STORYBOARD / 9:16</div><h2 id="storyTitle">—</h2></div><span class="tag" style="background:#e9f5ef;color:#17674f;border-color:#d1e7dc" id="durationTag">20 ثانية</span></div>
+        <div class="story"><strong id="storyHook">—</strong><p id="storyMeaning"></p></div>
+        <div id="scenes"></div><p class="note" id="direction"></p>
+        <div class="actions"><button type="button" class="btn" id="copyPrompt">نسخ أمر إنتاج كامل</button><button type="button" class="btn ghost" id="copyShort">نسخ النصوص فقط</button></div>
+      </div>
+    </section>
+    <section id="bridge" class="one hide">
+      <div class="panel">
+        <div class="eyebrow">FREE WORKFLOW</div><h2>02 / استخدام ChatGPT وClaude معًا</h2>
+        <p class="sub">تعاون يدوي واضح، دون دفع API ودون ادّعاء اتصال تلقائي غير متاح. ابدأ بالسيناريو هنا ثم انسخ البرومبت إلى إحدى الخدمتين.</p>
+        <div class="steps"><div class="step"><b>1. خطّط</b>جهّز الفكرة والمشاهد داخل الاستوديو.</div><div class="step"><b>2. طوّر</b>انسخ أمر الإنتاج إلى ChatGPT أو Claude Free إذا كان متاحًا بمنطقتك.</div><div class="step"><b>3. راجع</b>أعد النص النهائي إلى ChatGPT للمراجعة، ثم نفّذ اللقطات في أداة فيديو مناسبة.</div></div>
+        <div class="actions"><button type="button" class="btn" id="bridgeCopy">نسخ أمر جاهز لـ Claude</button></div>
+        <div class="links"><a class="link" href="https://claude.ai/" target="_blank" rel="noopener noreferrer">فتح Claude</a><a class="link" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">فتح ChatGPT</a><a class="link" href="https://github.com/abualfaisaltravel-boop/abualfaisal_ai" target="_blank" rel="noopener noreferrer">ملفات المشروع</a></div>
+        <p class="note">Claude Free لا يتصل تلقائيًا باشتراك ChatGPT Plus. وقد لا يكون متاحًا من اليمن. إنشاء فيديو واقعي كامل يتطلب أداة توليد فيديو منفصلة وفق حدودها المجانية إن توفرت.</p>
+      </div>
+    </section>
+    <section id="checklist" class="one hide">
+      <div class="panel">
+        <h2>03 / قائمة مراجعة ما قبل النشر</h2><p class="sub">الحالة تُحفظ على هذا الجهاز فقط. لا تُدخل أي معلومات شخصية للعملاء.</p>
+        <div id="checks"></div><div class="actions"><button class="btn alt" type="button" id="reset">إعادة ضبط المراجعة</button></div>
+      </div>
+    </section>
+    <footer class="foot">أبو الفيصل للسفريات والسياحة · عدن، اليمن<br>محتوى تجريبي غير منشور؛ راجع أي معلومات تشغيل أو أسعار أو تأشيرات قبل اعتمادها.</footer>
+  </main><div id="toast" role="status" class="hide"></div>
+  <script>
+    (function(){
+      "use strict";
+      var $=function(id){return document.getElementById(id)};
+      var catalog={
+        students:{title:"اليوم الذي كان سيضيع",hook:"رسالة القبول وصلت، لكن الوصول بعد بداية الدراسة!",meaning:"تحديد احتياج الطالب الحقيقي قبل اختيار مسار السفر.",scenes:[
+          ["طالب يمني يجلس أمام حاسوبه في غرفة نهارية، ينظر إلى تاريخ بدء الدراسة ثم إلى خيارات الرحلة.","قبل بداية الدراسة... بيوم واحد"],
+          ["يراجع خيارات مختلفة؛ أحدها يصل متأخرًا. تظهر الحيرة على وجهه دون نصوص صغيرة مقروءة.","مش كل رحلة تناسب موعدك"],
+          ["موظف أبو الفيصل يناقش معه توقيت الوصول والتوقف والوثائق، ثم يعرض خطة مناسبة دون وعود بالقبول أو دخول البلد.","نراجع الموعد والمسار قبل الإصدار"],
+          ["الطالب يجهّز ملفه ويتلقى ملخصًا واضحًا للرحلة؛ إغلاق بإطار الهوية.","أبو الفيصل للسفريات والسياحة"]],direction:"لا تُظهر جامعة حقيقية أو خطاب قبول مزيفًا؛ ركّز على قرار السفر والتوقيت لا على ضمان الدخول."},
+        flights:{title:"موعدين... وسبب واحد",hook:"الموعد الأرخص ليس دائمًا هو الأنسب للالتزام.",meaning:"ربط اختيار رحلة الطيران بسبب السفر والموعد الحقيقي للعميل.",scenes:[
+          ["لقطة ساعة على الحائط ثم تجهيز دعوة لحضور مناسبة عائلية داخل منزل عربي مضاء نهارًا.","موعد مهم ما يتكرر"],
+          ["شخص يقارن رحلتين في هاتفه؛ يصل أحد الخيارين بعد بدء المناسبة.","الوصول أهم من رقم السعر"],
+          ["موظف يراجع معه وقت الوصول والتوقف وشروط التذكرة باختصار.","نعرض الخيارات بتفاصيلها"],
+          ["يختار الموعد الملائم ويطمئن، ثم بطاقة هوية المكتب.","السفر قرار... وتفاصيله تفرق"]],direction:"اعرض الشاشة بصورة عامة وغير مقروءة، ولا تستخدم أسعارًا أو مواعيد رحلات حقيقية من دون مصدر."},
+        visa:{title:"السؤال الذي غيّر الاستعداد",hook:"ليس كل تجهيز للسفر يبدأ بحجز تذكرة.",meaning:"توضيح أهمية معرفة متطلبات الدخول قبل ترتيب بقية الخطوات.",scenes:[
+          ["شخص يراجع موعد مناسبة خارج البلد ويحضّر ملاحظات سفره.","عندك موعد مهم؟"],
+          ["يتلقى سؤالًا عن وثائق السفر؛ يتوقف ليتحقق مما يحتاجه فعلًا.","هل راجعت متطلبات دخولك؟"],
+          ["موظف يشرح ضرورة التحقق من الوثائق والمتطلبات الرسمية حسب الوجهة والجنسية.","نتحقق من المتطلبات قبل القرار"],
+          ["العميل يرتب خطته على أساس معلومات واضحة، مع ظهور اسم المكتب.","أبو الفيصل للسفريات والسياحة"]],direction:"لا تدّعِ ضمان صدور تأشيرة أو اعتمادًا حكوميًا. المتطلبات متغيرة وتحتاج تحققًا رسميًا."},
+        umrah:{title:"التاريخ الذي جمعهم",hook:"العائلة تختار يومًا يجتمع فيه الجميع، لا مجرد تاريخ سفر.",meaning:"تنسيق برنامج عمرة مناسب لظروف أفراد الأسرة.",scenes:[
+          ["عائلة يمنية محتشمة تتناقش حول موعد يجتمعون فيه للعمرة داخل غرفة مشرقة.","موعد يجمعنا جميعًا"],
+          ["أحد الأفراد يشير إلى اختلاف إجازات الأسرة، فيعيدون النظر في الخطة.","موعد يناسب الكل؟"],
+          ["موظف مكتب يوضح خيارات السفر والخدمات والشروط المتاحة دون وعود غير مؤكدة.","نساعدكم تقارنوا الخيارات"],
+          ["العائلة تتفق على خطة أولية، ثم بطاقة هوية المكتب.","أبو الفيصل للسفريات والسياحة"]],direction:"تجنب عرض الشعائر بطريقة غير دقيقة أو الادعاء بضمان تصاريح أو مواعيد."},
+        followup:{title:"أول مكالمة... قبل السؤال",hook:"تغيّر الموعد؛ والعميل يحتاج معلومة واضحة لا إشاعة.",meaning:"إبراز دور الوكالة في نقل المعلومات المؤكدة للعميل.",scenes:[
+          ["رجل يمني يستمع لحديث متضارب عن تغيير رحلة، داخل مجلس نهاري.","سمعت إن الرحلة تغيّرت؟"],
+          ["يتردد في اتخاذ قرار بناءً على رسالة غير رسمية.","الخبر يحتاج تأكيد"],
+          ["موظف يتحقق من جهة التشغيل ويشرح للعميل الخيار المتاح بعد التأكد.","نراجع المعلومة من مصدرها"],
+          ["العميل يعرف الخطوة التالية، وتنتهي اللقطة بهوية أبو الفيصل.","معلومة واضحة وقت الحاجة"]],direction:"لا تعرض إشعار إلغاء حقيقيًا أو تزعم توافر بدائل قبل التحقق من الشركة."}
+      };
+      var checks=["القصة لها مقدمة وسبب ونتيجة واضحة","النصوص عربية سليمة ومختصرة","المدة والمقاس عمودي 9:16 مناسبان","المشاهد مترابطة والشخصيات متسقة","وجوه عربية محتشمة وإضاءة متوازنة","لا حقائب أو غروب أو لقطات مسافر من الخلف","لا وعود غير مؤكدة حول التأشيرات أو الرحلات","الشعار والهوية وبيانات التواصل صحيحة"];
+      var last=null;
+      function safe(v){return String(v).replace(/[&<>"']/g,function(s){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]})}
+      function toast(t){var x=$("toast");x.textContent=t;x.classList.remove("hide");setTimeout(function(){x.classList.add("hide")},2200)}
+      function build(){
+        var s=catalog[$("service").value], dur=Number($("length").value), aim=$("aim").value,ctx=$("context").value.trim();
+        var times=[0,Math.round(dur*.18),Math.round(dur*.43),Math.round(dur*.74),dur];var arr=s.scenes.map(function(item,i){return {start:times[i],end:times[i+1],visual:item[0],line:item[1]}});
+        var goal={trust:"الثقة المهنية والوضوح",leads:"جذب استفسارات العملاء بطريقة غير مباشرة",attention:"الاحتفاظ بالمشاهدة من الثانية الأولى"}[aim];
+        last={title:s.title,hook:s.hook,meaning:s.meaning,direction:s.direction,scenes:arr,duration:dur,goal:goal,context:ctx,service:$("service").selectedOptions[0].text};
+        $("storyTitle").textContent=s.title;$("storyHook").textContent=s.hook;$("storyMeaning").textContent=s.meaning;$("durationTag").textContent=dur+" ثانية";
+        $("direction").textContent="ملاحظة إخراجية: "+s.direction;
+        $("scenes").innerHTML=arr.map(function(item,i){return '<article class="scene"><div class="time">المشهد '+(i+1)+' · '+item.start+'–'+item.end+' ثانية</div><p>'+safe(item.visual)+'</p><p class="overlay">النص: «'+safe(item.line)+'»</p></article>'}).join("");
+      }
+      function storyboard(){return "سيناريو ريلز: "+last.title+"\nالخدمة: "+last.service+"\nالمدة: "+last.duration+" ثانية | 9:16\nالهدف: "+last.goal+"\n"+(last.context?"تفصيل: "+last.context+"\n":"")+"\n"+last.scenes.map(function(s,i){return "المشهد "+(i+1)+" ("+s.start+"–"+s.end+" ثانية)\nالصورة: "+s.visual+"\nالنص على الشاشة: "+s.line}).join("\n\n")+"\n\nتوجيه: "+last.direction}
+      function prompt(){return "أنت مدير إبداعي ومخرج إعلانات عربي. طوّر السيناريو التالي لصالح «أبو الفيصل للسفريات والسياحة» في عدن.\n\n"+storyboard()+"\n\nالتنفيذ المطلوب:\n- حافظ على قصة واحدة متسلسلة واضحة: بداية، حدث، حل، نتيجة.\n- صِف لكل لقطة التكوين والحركة والانتقال وطبيعة الضوء.\n- الشخصيات يمنية عربية محتشمة ومتسقة، واقعية بالكامل.\n- عمودي 9:16، موسيقى فقط دون حوار أو تعليق صوتي.\n- لغة النصوص عربية؛ لا نصوص مقروءة زائفة على شاشة الهاتف.\n- الهوية كحلي وبنفسجي داكن وذهبي وأبيض.\n- امنع الغروب والحقائب والخرائط والدبابيس ولقطة المسافر من الخلف.\n- لا توهم بإصدار تأشيرة مضمون أو سعر ثابت أو رحلات مؤكدة.\n- اقترح تحسينات مبتكرة دون تكرار أفكار تقليدية، ثم أخرج خطة تنفيذ قابلة للتطبيق.\n- اكتب النصوص النهائية والإرشادات كاملة بالعربية.\n- لا تزعم إنتاج ملف فيديو إذا لم تتوفر لديك أداة توليد فيديو فعلية."}
+      function copy(t){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(function(){toast("تم النسخ")}).catch(function(){fallback(t)})}else fallback(t)}
+      function fallback(t){var x=document.createElement("textarea");x.value=t;x.style.position="fixed";x.style.opacity="0";document.body.appendChild(x);x.select();try{document.execCommand("copy");toast("تم النسخ")}catch(e){toast("تعذر النسخ، جرّب متصفحًا أحدث")}x.remove()}
+      document.querySelectorAll("[data-tab]").forEach(function(el){el.addEventListener("click",function(){var tab=el.dataset.tab;document.querySelectorAll("[data-tab]").forEach(function(a){a.classList.toggle("active",a===el)});["studio","bridge","checklist"].forEach(function(id){$(id).classList.toggle("hide",id!==tab)})})});
+      $("generate").addEventListener("click",function(){build();toast("تم تحديث السيناريو")});
+      ["service","length","aim"].forEach(function(id){$(id).addEventListener("change",build)});
+      $("context").addEventListener("change",build);
+      $("copyStoryboard").addEventListener("click",function(){copy(storyboard())});
+      $("copyShort").addEventListener("click",function(){copy(last.scenes.map(function(s){return s.line}).join("\n"))});
+      $("copyPrompt").addEventListener("click",function(){copy(prompt())});
+      $("bridgeCopy").addEventListener("click",function(){copy(prompt());toast("انسخ المحتوى داخل Claude Free")});
+      function renderChecks(){var done=JSON.parse(localStorage.getItem("aa_review_v1")||"{}");$("checks").innerHTML=checks.map(function(t,i){return '<label class="check"><input type="checkbox" data-check="'+i+'" '+(done[i]?"checked":"")+'><span>'+safe(t)+'</span></label>'}).join("");$("checks").querySelectorAll("input").forEach(function(el){el.addEventListener("change",function(){done[el.dataset.check]=el.checked;try{localStorage.setItem("aa_review_v1",JSON.stringify(done))}catch(e){toast("تعذر حفظ الاختيارات على جهازك")}})})}
+      $("reset").addEventListener("click",function(){localStorage.removeItem("aa_review_v1");renderChecks();toast("أعيد ضبط قائمة المراجعة")});
+      build();renderChecks();
+    })();
+  </script>
+</body></html>
