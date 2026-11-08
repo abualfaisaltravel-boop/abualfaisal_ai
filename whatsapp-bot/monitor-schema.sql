@@ -23,3 +23,9 @@ CREATE TABLE IF NOT EXISTS monitor_alerts (
   UNIQUE (wa_id, pending_since)
 );
 CREATE INDEX IF NOT EXISTS idx_monitor_alerts_status ON monitor_alerts(status, created_at);
+
+CREATE TABLE IF NOT EXISTS monitor_message_ids (
+  wa_message_id TEXT PRIMARY KEY,
+  received_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_monitor_received_at ON monitor_message_ids(received_at);
