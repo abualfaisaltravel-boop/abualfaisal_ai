@@ -9,7 +9,9 @@ CREATE TABLE IF NOT EXISTS requests (
   details TEXT NOT NULL DEFAULT '',
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
-  last_inbound_at TEXT NOT NULL
+  last_inbound_at TEXT NOT NULL,
+  last_human_reply_at TEXT,
+  automation_paused INTEGER NOT NULL DEFAULT 0 CHECK (automation_paused IN (0,1))
 );
 CREATE UNIQUE INDEX IF NOT EXISTS one_active_request_per_contact
   ON requests(wa_id) WHERE status NOT IN ('مكتمل', 'ملغي');
