@@ -1,8 +1,10 @@
+import { monitorInbound, monitorHumanReply, queueDueAlerts } from "./monitor.js";
 // Abu Alfaisal WhatsApp intake service for Cloudflare Workers.
 // Credentials and customer messages are NEVER stored in the public GitHub repository.
 // This service receives official WhatsApp Cloud API webhooks for ONE explicitly configured number.
 // Designed for a phased WhatsApp Business App Coexistence rollout; it does not initiate onboarding.
-// By design it NEVER sends messages automatically until a separately reviewed reply mode is implemented.
+// By design it NEVER sends messages automatically. Four-minute alerts are safely queued
+// but CANNOT be sent into an existing WhatsApp group using the Coexistence Cloud API.
 
 const ACTIVE_STATES = ["جديد", "قيد المراجعة", "بانتظار العميل", "بانتظار مزود الخدمة"];
 const ALLOWED_STATES = [...ACTIVE_STATES, "مكتمل", "ملغي"];
@@ -13,7 +15,7 @@ export default {
     const url = new URL(request.url);
     try {
       if (url.pathname === "/health" && request.method === "GET") {
-        return json({ ok: true, application: "Abu Alfaisal WhatsApp Intake", mode: "receive-only" });
+        return json({ ok: true, application: "Abu Alfaisal WhatsApp Intake", mode: "four-minute-monitor-queue-only" });
       }
       if (url.pathname === "/webhook" && request.method === "GET") {
         const mode = url.searchParams.get("hub.mode");
@@ -36,6 +38,15 @@ export default {
         catch { return new Response("Invalid JSON", { status: 400 }); }
         await ingest(payload, env);
         return new Response("EVENT_RECEIVED", { status: 200 });
+      }
+      if (url.pathname === "/api/monitor-alerts" && request.method === "GET") {
+        if (!authorized(request, env)) return new Response("Unauthorized", { status: 401 });
+        if (!env.DB) return new Response("Not configured", { status: 503 });
+        const rows = await env.DB.prepare(
+          "SELECT id, wa_id, customer_name, pending_since, alert_text, status, created_at " +
+          "FROM monitor_alerts ORDER BY created_at DESC LIMIT 200"
+        ).all();
+        return json({ alerts: rows.results });
       }
       if (url.pathname === "/api/requests" && request.method === "GET") {
         if (!authorized(request, env)) return new Response("Unauthorized", { status: 401 });
@@ -60,6 +71,12 @@ export default {
       // Do not log webhook bodies, customer phone numbers, secrets, or message text.
       return new Response("Processing error", { status: 500 });
     }
+  },
+  async scheduled(_event, env) {
+    // Triggered by "*/1 * * * *" to queue one alert after four unanswered minutes.
+    // The service NEVER sends to any WhatsApp group or customer.
+    if (!env.DB || !env.PHONE_NUMBER_ID) return;
+    await queueDueAlerts(env.DB);
   }
 };
 
@@ -118,6 +135,7 @@ async function ingest(payload, env) {
             ? new Date(seconds * 1000).toISOString() : new Date().toISOString();
           await env.DB.prepare("UPDATE requests SET last_human_reply_at = ?, automation_paused = 1, updated_at = ? WHERE wa_id = ? AND status NOT IN ('مكتمل','ملغي')")
             .bind(time, time, customerId).run();
+          await monitorHumanReply(env.DB, customerId);
         }
         continue;
       }
@@ -143,6 +161,7 @@ async function ingest(payload, env) {
           .bind(externalMessageId, active.id, text, now).run();
         // Avoid processing duplicate webhook deliveries.
         if (msgResult.meta?.changes === 0) continue;
+        await monitorInbound(env.DB, waId, name);
         const category = classify(text);
         const nextCategory = active.service === "غير محدد" && category !== "غير محدد" ? category : active.service;
         await env.DB.prepare("UPDATE requests SET service = ?, customer_name = CASE WHEN customer_name = 'عميل واتساب' THEN ? ELSE customer_name END, details = CASE WHEN LENGTH(details) < 28000 THEN details || ? ELSE details END, updated_at = ?, last_inbound_at = ? WHERE id = ?")
