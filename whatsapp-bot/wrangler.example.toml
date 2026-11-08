@@ -7,6 +7,8 @@ compatibility_date = "2026-11-08"
 # Must be the Meta Cloud API Phone Number ID verified for the CURRENT office number after Coexistence approval.
 # Never configure this until device compatibility and Meta eligibility are verified.
 PHONE_NUMBER_ID = "REPLACE_WITH_VERIFIED_CURRENT_NUMBER_ID"
+# Explicit monitor mode: do not store customer message text or create CRM tickets.
+MONITOR_ONLY = "true"
 
 [[d1_databases]]
 binding = "DB"
