@@ -2,6 +2,7 @@ import { monitorInbound, monitorHumanReply, queueDueAlerts } from "./monitor.js"
 // Abu Alfaisal WhatsApp intake service for Cloudflare Workers.
 // Credentials and customer messages are NEVER stored in the public GitHub repository.
 // This service receives official WhatsApp Cloud API webhooks for ONE explicitly configured number.
+// Default configuration: MONITOR_ONLY, no message body storage, no request creation, no replies.
 // Designed for a phased WhatsApp Business App Coexistence rollout; it does not initiate onboarding.
 // By design it NEVER sends messages automatically. Four-minute alerts are safely queued
 // but CANNOT be sent into an existing WhatsApp group using the Coexistence Cloud API.
@@ -133,9 +134,11 @@ async function ingest(payload, env) {
           const seconds = Number(echo.timestamp);
           const time = Number.isFinite(seconds) && seconds > 1500000000 && seconds < Date.now()/1000 + 86400
             ? new Date(seconds * 1000).toISOString() : new Date().toISOString();
-          await env.DB.prepare("UPDATE requests SET last_human_reply_at = ?, automation_paused = 1, updated_at = ? WHERE wa_id = ? AND status NOT IN ('مكتمل','ملغي')")
-            .bind(time, time, customerId).run();
           await monitorHumanReply(env.DB, customerId);
+          if (env.MONITOR_ONLY === "false") {
+            await env.DB.prepare("UPDATE requests SET last_human_reply_at = ?, automation_paused = 1, updated_at = ? WHERE wa_id = ? AND status NOT IN ('مكتمل','ملغي')")
+              .bind(time, time, customerId).run();
+          }
         }
         continue;
       }
@@ -144,11 +147,20 @@ async function ingest(payload, env) {
         const waId = String(message.from || "");
         const externalMessageId = String(message.id || "");
         if (!/^[0-9]{9,16}$/.test(waId) || !externalMessageId.startsWith("wamid.")) continue;
-        const text = textFromMessage(message);
         const now = new Date().toISOString();
+        const name = names.get(waId) || "عميل واتساب";
+        if (env.MONITOR_ONLY !== "false") {
+          // Only sender ID, display name and arrival time are retained.
+          // Store a message ID to deduplicate webhook retries, never the message body.
+          const once = await env.DB.prepare(
+            "INSERT OR IGNORE INTO monitor_message_ids (wa_message_id, received_at) VALUES (?, ?)"
+          ).bind(externalMessageId, now).run();
+          if ((once.meta?.changes || 0) > 0) await monitorInbound(env.DB, waId, name);
+          continue;
+        }
+        const text = textFromMessage(message);
         const count = await env.DB.prepare("SELECT COUNT(*) AS total FROM requests").first();
         const assignee = ASSIGNEES[Number(count?.total || 0) % ASSIGNEES.length];
-        const name = names.get(waId) || "عميل واتساب";
         let active = await env.DB.prepare("SELECT id, service FROM requests WHERE wa_id = ? AND status NOT IN ('مكتمل', 'ملغي') LIMIT 1").bind(waId).first();
         if (!active) {
           const id = crypto.randomUUID();
