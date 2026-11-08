@@ -4,7 +4,8 @@ main = "worker.js"
 compatibility_date = "2026-11-08"
 
 [vars]
-# Must be the Meta Cloud API ID of the NEW dedicated number.
+# Must be the Meta Cloud API Phone Number ID verified for the CURRENT office number after Coexistence approval.
+# Never configure this until device compatibility and Meta eligibility are verified.
 PHONE_NUMBER_ID = "REPLACE_WITH_NEW_PHONE_NUMBER_ID"
 
 [[d1_databases]]
