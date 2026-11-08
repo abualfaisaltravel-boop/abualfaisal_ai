@@ -1,0 +1,13 @@
+# Template only. Copy to wrangler.toml and replace placeholders before deployment.
+name = "abu-alfaisal-whatsapp-intake"
+main = "worker.js"
+compatibility_date = "2026-11-08"
+
+[vars]
+# Must be the Meta Cloud API ID of the NEW dedicated number.
+PHONE_NUMBER_ID = "REPLACE_WITH_NEW_PHONE_NUMBER_ID"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "abu-alfaisal-whatsapp"
+database_id = "REPLACE_WITH_CLOUDFLARE_D1_DATABASE_ID"
