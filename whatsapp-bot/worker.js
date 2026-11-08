@@ -24,7 +24,7 @@ export default {
         return new Response("Forbidden", { status: 403 });
       }
       if (url.pathname === "/webhook" && request.method === "POST") {
-        if (!env.META_APP_SECRET || !env.DB) return new Response("Not configured", { status: 503 });
+        if (!env.META_APP_SECRET || !env.DB || !env.PHONE_NUMBER_ID) return new Response("Not configured", { status: 503 });
         const body = await request.text();
         if (body.length > 1048576) return new Response("Payload too large", { status: 413 });
         if (!(await checkSignature(body, request.headers.get("x-hub-signature-256"), env.META_APP_SECRET))) {
