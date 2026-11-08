@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111a3d">
+<meta name="description" content="لوحة تشغيل أبو الفيصل للسفريات والسياحة: متابعة الطلبات والرحلات والتأشيرات محليًا">
+<title>لوحة التشغيل | استوديو أبو الفيصل</title>
+<link rel="stylesheet" href="../assets/operations.css?v=1">
+</head>
+<body>
+<header class="mast">
+ <div class="shell">
+  <div class="mast-nav">
+   <div class="identity"><div class="mark" aria-hidden="true">أ</div><div><strong>أبو الفيصل للسفريات والسياحة</strong><span>لوحة التشغيل اليومية</span></div></div>
+   <a class="back-link" href="../index.html">↗ العودة إلى استوديو الإعلانات</a>
+  </div>
+  <div class="hero"><div><span class="kicker">مساحة العمل • حفظ محلي</span><h1>متابعة واضحة لكل طلب.</h1><p>إدارة طلبات العملاء والرحلات والتأشيرات والمواعيد من الجوال، دون إدخال أسعار أو بيانات غير مؤكدة.</p></div><div class="hero-actions"><button class="btn gold" id="newTop" type="button">＋ طلب جديد</button><button class="btn outline-light" id="exportJson" type="button">تصدير JSON</button><button class="btn outline-light" id="exportTxt" type="button">تصدير TXT</button></div></div>
+ </div>
+</header>
+<main class="shell">
+ <section class="metrics" aria-label="مؤشرات الطلبات">
+  <div class="metric"><span>إجمالي الطلبات</span><b id="statAll">0</b></div>
+  <div class="metric"><span>قيد العمل</span><b id="statActive">0</b></div>
+  <div class="metric urgent"><span>متأخرة عن المتابعة</span><b id="statLate">0</b></div>
+  <div class="metric"><span>متابعة اليوم</span><b id="statToday">0</b></div>
+ </section>
+ <div class="privacy" role="note"><strong>🔒 خصوصية البيانات:</strong> يُحفظ ما تدخله داخل هذا المتصفح على جهازك فقط. لا ينتقل تلقائيًا بين أجهزة الفريق ولا يُرفع إلى GitHub أو أي خادم. استخدم التصدير للنسخ الاحتياطي، وتجنب تخزين صور الجوازات أو البيانات شديدة الحساسية على الأجهزة المشتركة.</div>
+ <section class="alerts" id="lateAlerts" aria-live="polite" hidden></section>
+ <section class="workspace">
+  <div class="list-column">
+   <div class="panel">
+    <div class="section-head"><div><span class="eyebrow">01 / إدارة الطلبات</span><h2>الطلبات والمتابعات</h2></div><button class="btn soft small" id="importTrigger" type="button">استيراد JSON</button><input type="file" id="importJson" accept=".json,application/json" hidden></div>
+    <div class="filters">
+      <label class="field-wide"><span>بحث في الطلبات</span><input id="search" type="search" autocomplete="off" placeholder="اسم العميل، الوجهة، الملاحظات، رقم الطلب..."></label>
+      <label><span>الخدمة</span><select id="serviceFilter"><option value="">كل الخدمات</option><option>تذاكر الطيران</option><option>التأشيرات</option><option>العمرة</option><option>الفنادق</option><option>الموافقات الأمنية</option><option>المتابعات</option><option>خدمة أخرى</option></select></label>
+      <label><span>الحالة</span><select id="statusFilter"><option value="">كل الحالات</option><option>جديد</option><option>قيد المراجعة</option><option>بانتظار العميل</option><option>بانتظار مزود الخدمة</option><option>مكتمل</option><option>ملغي</option></select></label>
+      <label><span>المسؤول</span><input id="ownerFilter" list="teamMembers" placeholder="كل الموظفين"></label>
+      <label><span>موعد المتابعة</span><select id="dueFilter"><option value="">كل المواعيد</option><option value="late">المتأخرة</option><option value="today">اليوم</option><option value="upcoming">القادمة</option><option value="none">بدون موعد</option></select></label>
+    </div>
+    <div class="results-head"><span id="resultCount">0 طلب</span><button class="text-btn" id="clearFilters" type="button">مسح التصفية</button></div>
+    <div id="requestList" class="request-list" aria-live="polite"></div>
+   </div>
+  </div>
+  <div class="edit-column" id="editorAnchor">
+   <section class="panel">
+    <div class="section-head"><div><span class="eyebrow">02 / بيانات الطلب</span><h2 id="formHeading">إضافة طلب جديد</h2></div><button class="text-btn" id="resetForm" type="button">طلب فارغ</button></div>
+    <form id="requestForm">
+     <input type="hidden" id="recordId">
+     <div class="two-fields"><label><span>اسم العميل أو معرّف الطلب <em>*</em></span><input id="clientName" maxlength="120" required autocomplete="off" placeholder="ادخل اسمًا أو رمزًا داخليًا"></label><label><span>رقم واتساب العميل (اختياري)</span><input type="tel" id="clientPhone" inputmode="tel" maxlength="25" dir="ltr" placeholder="967..."></label></div>
+     <div class="two-fields"><label><span>نوع الخدمة <em>*</em></span><select id="service" required><option value="">اختر الخدمة</option><option>تذاكر الطيران</option><option>التأشيرات</option><option>العمرة</option><option>الفنادق</option><option>الموافقات الأمنية</option><option>المتابعات</option><option>خدمة أخرى</option></select></label><label><span>حالة الطلب</span><select id="status"><option>جديد</option><option>قيد المراجعة</option><option>بانتظار العميل</option><option>بانتظار مزود الخدمة</option><option>مكتمل</option><option>ملغي</option></select></label></div>
+     <div class="two-fields"><label><span>الموظف المسؤول</span><input id="owner" list="teamMembers" maxlength="90" placeholder="اختر أو اكتب اسم الموظف"></label><label><span>موعد المتابعة</span><input id="followUp" type="datetime-local"></label></div>
+     <label><span>عنوان مختصر / مسار الرحلة</span><input id="subject" maxlength="160" placeholder="العنوان كما ورد من العميل"></label>
+     <label><span>تفاصيل الرحلة أو المستند النصي</span><textarea id="travelDetails" rows="5" maxlength="30000" placeholder="الصق التفاصيل كما وصلت، دون إضافة رحلات أو أسعار افتراضية"></textarea></label>
+     <div class="upload"><label for="travelFile" class="file-select">＋ إرفاق ملف رحلة</label><input type="file" id="travelFile" accept=".txt,.csv,.json,.pdf,.png,.jpg,.jpeg,.webp,text/plain,text/csv,application/json,application/pdf,image/png,image/jpeg,image/webp"><span id="attachmentInfo">TXT وCSV وJSON لقراءة النص، أو PDF وصور كمرفقات محلية (حتى 700 كيلوبايت).</span><button type="button" class="text-btn" id="removeAttachment" hidden>إزالة المرفق</button></div>
+     <label><span>ملاحظات الموظف والمتابعة</span><textarea id="notes" rows="3" maxlength="20000" placeholder="توجيهات داخلية أو نتيجة آخر تواصل"></textarea></label>
+     <div class="form-actions"><button type="submit" class="btn primary" id="saveRequest">حفظ الطلب محليًا</button><button type="button" class="btn light" id="duplicateRequest" hidden>نسخ كطلب جديد</button><button type="button" class="btn danger-outline" id="deleteRequest" hidden>حذف الطلب</button></div>
+     <p class="hint" id="saveHint">لا تُحفظ البيانات على الخادم. احتفظ بنسخة JSON احتياطية بانتظام.</p>
+    </form>
+   </section>
+   <section class="panel messages">
+    <div class="section-head"><div><span class="eyebrow">03 / واتساب</span><h2>قوالب الرسائل</h2></div></div>
+    <p class="hint">الرسالة تتكون فقط من معلومات الطلب المدخلة. يمكنك تعديل النص قبل النسخ أو فتح واتساب، ولن تُرسل تلقائيًا.</p>
+    <label><span>نوع الرسالة</span><select id="templateType"><option value="received">استلام طلب العميل</option><option value="details">استكمال بيانات الطلب</option><option value="processing">الطلب قيد المتابعة</option><option value="flight">تفاصيل الرحلة المدخلة</option><option value="follow">تذكير بالمتابعة</option></select></label>
+    <textarea id="messagePreview" rows="7" aria-label="نص رسالة واتساب القابل للتحرير"></textarea>
+    <div class="form-actions"><button type="button" id="generateTemplate" class="btn light">تحديث الرسالة</button><button type="button" id="copyMessage" class="btn primary">نسخ الرسالة</button><button type="button" id="openWhatsapp" class="btn soft">فتح واتساب</button></div>
+    <p class="hint" id="messageHint">اختر طلبًا محفوظًا أو عبّئ نموذج الطلب لإنشاء الرسالة.</p>
+   </section>
+  </div>
+ </section>
+ <datalist id="teamMembers"><option value="زيد العودي"></option><option value="موسى باعباد"></option><option value="محفوظ العبدلي"></option><option value="سمير باعباد"></option><option value="عباد باعباد"></option><option value="يونس باعباد"></option></datalist>
+ <footer>استوديو أبو الفيصل • لوحة تشغيل محلية قابلة للتطوير • <a href="../index.html">العودة للاستوديو</a></footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="../assets/operations.js?v=1" defer></script>
+</body></html>
