@@ -1,6 +1,7 @@
 // Abu Alfaisal WhatsApp intake service for Cloudflare Workers.
 // Credentials and customer messages are NEVER stored in the public GitHub repository.
-// This service receives and records official WhatsApp Cloud API webhooks.
+// This service receives official WhatsApp Cloud API webhooks for ONE explicitly configured number.
+// Designed for a phased WhatsApp Business App Coexistence rollout; it does not initiate onboarding.
 // By design it NEVER sends messages automatically until a separately reviewed reply mode is implemented.
 
 const ACTIVE_STATES = ["جديد", "قيد المراجعة", "بانتظار العميل", "بانتظار مزود الخدمة"];
@@ -38,7 +39,7 @@ export default {
       }
       if (url.pathname === "/api/requests" && request.method === "GET") {
         if (!authorized(request, env)) return new Response("Unauthorized", { status: 401 });
-        const rows = await env.DB.prepare("SELECT id, wa_id, customer_name, service, status, assigned_to, details, created_at, updated_at, last_inbound_at FROM requests ORDER BY updated_at DESC LIMIT 200").all();
+        const rows = await env.DB.prepare("SELECT id, wa_id, customer_name, service, status, assigned_to, details, created_at, updated_at, last_inbound_at, last_human_reply_at, automation_paused FROM requests ORDER BY updated_at DESC LIMIT 200").all();
         return json({ requests: rows.results });
       }
       if (url.pathname.startsWith("/api/requests/") && request.method === "PATCH") {
@@ -103,9 +104,23 @@ async function ingest(payload, env) {
   if (payload?.object !== "whatsapp_business_account" || !Array.isArray(payload.entry)) return;
   for (const entry of payload.entry) {
     for (const change of (entry.changes || [])) {
-      if (change.field !== "messages") continue;
+      if (change.field !== "messages" && change.field !== "smb_message_echoes") continue;
       const data = change.value || {};
-      if (env.PHONE_NUMBER_ID && String(data.metadata?.phone_number_id) !== String(env.PHONE_NUMBER_ID)) continue;
+      if (String(data.metadata?.phone_number_id) !== String(env.PHONE_NUMBER_ID)) continue;
+      // App-originated employee replies in Coexistence arrive separately from incoming customer messages.
+      // Mark the conversation as human-managed; this prevents future automation from interrupting staff.
+      if (change.field === "smb_message_echoes") {
+        for (const echo of (data.message_echoes || [])) {
+          const customerId = String(echo.to || "").replace(/[^0-9]/g, "");
+          if (!/^[0-9]{9,16}$/.test(customerId) || !String(echo.id || "").startsWith("wamid.")) continue;
+          const seconds = Number(echo.timestamp);
+          const time = Number.isFinite(seconds) && seconds > 1500000000 && seconds < Date.now()/1000 + 86400
+            ? new Date(seconds * 1000).toISOString() : new Date().toISOString();
+          await env.DB.prepare("UPDATE requests SET last_human_reply_at = ?, automation_paused = 1, updated_at = ? WHERE wa_id = ? AND status NOT IN ('مكتمل','ملغي')")
+            .bind(time, time, customerId).run();
+        }
+        continue;
+      }
       const names = new Map((data.contacts || []).map(contact => [contact.wa_id, String(contact.profile?.name || "").slice(0, 120)]));
       for (const message of (data.messages || [])) {
         const waId = String(message.from || "");
