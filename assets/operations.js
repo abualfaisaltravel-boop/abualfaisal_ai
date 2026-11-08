@@ -52,10 +52,10 @@ function gather(){
  notes:byId("notes").value.trim(),attachment:attachment?{...attachment}:null};
 }
 function renderAttachment(){
- const info=byId("attachmentInfo"),rem=byId("removeAttachment");
- if(!attachment){info.textContent="TXT وCSV وJSON لقراءة النص، أو PDF وصور كمرفقات محلية (حتى 700 كيلوبايت).";rem.hidden=true;return;}
+ const info=byId("attachmentInfo"),rem=byId("removeAttachment"),down=byId("downloadAttachment");
+ if(!attachment){info.textContent="TXT وCSV وJSON لقراءة النص، أو PDF وصور كمرفقات محلية (حتى 700 كيلوبايت).";rem.hidden=true;down.hidden=true;return;}
  info.textContent="المرفق المحلي: "+attachment.name+" ("+Math.ceil(attachment.size/1024)+" كيلوبايت). يُضمّن في نسخة JSON.";
- rem.hidden=false;
+ rem.hidden=false;down.hidden=false;
 }
 function resetForm(){
  byId("requestForm").reset();byId("recordId").value="";byId("status").value="جديد";
@@ -192,7 +192,8 @@ async function handleTravelFile(evt){
   }else if(["pdf","png","jpg","jpeg","webp"].includes(extension)){
    if(file.size>716800)throw new Error("المرفق أكبر من 700 كيلوبايت. قلّل حجمه أو الصق التفاصيل نصيًا.");
    const declared={pdf:"application/pdf",png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",webp:"image/webp"}[extension];
-   const data=await readFile(file,"data");
+   const source=file.type===declared?file:new Blob([file],{type:declared});
+   const data=await readFile(source,"data");
    if(!data.startsWith("data:"+declared+";base64,"))throw new Error("نوع الملف غير متوافق مع امتداده.");
    attachment={name:file.name.slice(0,150),type:declared,size:file.size,data};renderAttachment();
    toast("تم تجهيز المرفق المحلي. احفظ الطلب لتثبيته.");
@@ -272,6 +273,7 @@ function init(){
  byId("clearFilters").addEventListener("click",()=>{for(const id of ["search","serviceFilter","statusFilter","ownerFilter","dueFilter"])byId(id).value="";renderList();});
  byId("travelFile").addEventListener("change",handleTravelFile);
  byId("removeAttachment").addEventListener("click",()=>{attachment=null;renderAttachment();toast("تمت إزالة المرفق من النموذج؛ احفظ التعديلات.");});
+ byId("downloadAttachment").addEventListener("click",()=>{if(!attachment)return;const a=document.createElement("a");a.href=attachment.data;a.download=attachment.name||"مرفق";document.body.appendChild(a);a.click();a.remove();});
  byId("exportTxt").addEventListener("click",()=>exportData("txt"));
  byId("exportJson").addEventListener("click",()=>exportData("json"));
  byId("importTrigger").addEventListener("click",()=>byId("importJson").click());
