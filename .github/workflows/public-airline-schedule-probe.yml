@@ -17,3 +17,9 @@ jobs:
         run: python -m pip install -q requests beautifulsoup4
       - name: Inspect public airline schedule query result formats
         run: python flight-data/inspect_public_results.py
+
+      - name: Check public feed browser access headers
+        run: |
+          curl -sSI -H 'Origin: https://headless-bvihnktjqgb-abualfaisaltravel-1411.wix-site-host.com' \
+            'https://raw.githubusercontent.com/abualfaisaltravel-boop/abualfaisal_ai/main/flight-data/schedules.json' \
+            | grep -Ei '^(HTTP/|access-control-allow-origin:|content-type:|cache-control:)'
