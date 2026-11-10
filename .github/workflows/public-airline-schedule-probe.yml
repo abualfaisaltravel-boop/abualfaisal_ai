@@ -1,0 +1,50 @@
+name: Check public airline schedule pages
+'on':
+  push:
+    paths:
+      - '.github/workflows/public-airline-schedule-probe.yml'
+  workflow_dispatch:
+jobs:
+  check-public-sources:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    timeout-minutes: 5
+    steps:
+      - name: Probe public pages without login or booking activity
+        shell: bash
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from urllib.request import Request, urlopen
+          from urllib.error import HTTPError, URLError
+          from urllib.parse import urlsplit
+          class Forms(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.forms=[]; self.selects=[]; self.fields=[]; self.tables=0
+              def handle_starttag(self,t,a):
+                  v=dict(a)
+                  if t=='form': self.forms.append({'method':v.get('method','GET'),'action':v.get('action','')})
+                  if t=='select': self.selects.append(v.get('name','') or v.get('id',''))
+                  if t=='input': self.fields.append(v.get('name','') or v.get('id',''))
+                  if t=='table': self.tables+=1
+          urls={
+            'Yemenia schedule search form':'https://yemenia.com/ar/flights-schedule',
+            'Yemenia public dated query':'https://yemenia.com/ar/flights-schedule?date=2026-11-21&from=1658&to=1662',
+            'Fly Aden public schedule form':'https://customer3.videcom.com/FlyAden/VARS/Public/CustomerPanels/FlightScheduleReportParams.aspx'
+          }
+          for label,url in urls.items():
+              print('SOURCE:',label,'HOST:',urlsplit(url).hostname)
+              try:
+                  req=Request(url,headers={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/125.0 Safari/537.36','Accept':'text/html,application/xhtml+xml','Accept-Language':'ar,en;q=0.8'})
+                  with urlopen(req,timeout=20) as r:
+                      body=r.read(300000).decode('utf-8','replace')
+                      p=Forms();p.feed(body)
+                      print('HTTP:',r.status,'HTML_BYTES:',len(body.encode()),'TYPE:',r.headers.get('Content-Type'))
+                      print('FORMS:',p.forms[:3],'SELECTS:',p.selects[:16],'INPUTS:',p.fields[:16],'TABLES:',p.tables)
+                      print('NO_FLIGHTS_TEXT:',('لا توجد رحلات' in body or 'No Flights' in body))
+              except HTTPError as e: print('HTTP_ERROR:',e.code)
+              except URLError as e: print('NETWORK_ERROR:',str(e.reason)[:120])
+              except Exception as e: print('FAILED:',type(e).__name__,str(e)[:120])
+              print('----')
+          PY
