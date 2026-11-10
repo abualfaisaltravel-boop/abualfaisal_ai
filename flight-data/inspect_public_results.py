@@ -24,6 +24,11 @@ for city, destination in (("ADE","JED"),("ADE","CAI")):
         print("ADEN_LINKS",[(a.get_text(" ",strip=True)[:35],a.get("href","")[:130]) for a in t.find_all("a")[:12]])
         print("ADEN_IFRAMES",[x.get("src") for x in t.find_all("iframe")[:4]])
         print("ADEN_SCRIPTS",[x.get("src") for x in t.find_all("script",src=True)[-8:]])
+        for code in ("DH0200","DH0102"):
+            matches=t.find_all(string=lambda x:x and code in x)
+            if matches:
+                node=matches[0]
+                print("ADEN_ROW_HTML",code,str(node.parent.parent.parent)[:3700])
     except Exception as exc: print("ADEN_ERROR",type(exc).__name__,str(exc)[:200])
 YEM="https://yemenia.com/ar/flights-schedule"
 for date in ("2026-10-20","2026-11-13"):
@@ -31,5 +36,5 @@ for date in ("2026-10-20","2026-11-13"):
         res=requests.get(YEM,params={"from":"1658","to":"1663","date":date},headers=HEADERS,timeout=25)
         doc=BeautifulSoup(res.text,"html.parser")
         main=doc.select_one("main") or doc
-        print("YEMENIA_QUERY",date,"STATUS",res.status_code,"TEXT",main.get_text(" ",strip=True)[:450],"TABLES",len(main.find_all("table")))
+        print("YEMENIA_QUERY",date,"STATUS",res.status_code,"TEXT",main.get_text(" ",strip=True)[:450],"TABLES",len(main.find_all("table")),"NO_FLIGHTS",("لا توجد رحلات" in main.get_text(" ",strip=True)))
     except Exception as exc: print("YEMENIA_ERROR",date,type(exc).__name__,str(exc)[:180])
