@@ -1,50 +1,57 @@
-name: Check public airline schedule pages
+name: Inspect public airline timetable forms
 'on':
   push:
     paths:
       - '.github/workflows/public-airline-schedule-probe.yml'
   workflow_dispatch:
 jobs:
-  check-public-sources:
+  inspect:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     timeout-minutes: 5
     steps:
-      - name: Probe public pages without login or booking activity
+      - run: python -m pip install -q beautifulsoup4
+      - name: Inspect only public flight search HTML
         shell: bash
         run: |
           python - <<'PY'
-          from html.parser import HTMLParser
-          from urllib.request import Request, urlopen
-          from urllib.error import HTTPError, URLError
-          from urllib.parse import urlsplit
-          class Forms(HTMLParser):
-              def __init__(self):
-                  super().__init__(); self.forms=[]; self.selects=[]; self.fields=[]; self.tables=0
-              def handle_starttag(self,t,a):
-                  v=dict(a)
-                  if t=='form': self.forms.append({'method':v.get('method','GET'),'action':v.get('action','')})
-                  if t=='select': self.selects.append(v.get('name','') or v.get('id',''))
-                  if t=='input': self.fields.append(v.get('name','') or v.get('id',''))
-                  if t=='table': self.tables+=1
-          urls={
-            'Yemenia schedule search form':'https://yemenia.com/ar/flights-schedule',
-            'Yemenia public dated query':'https://yemenia.com/ar/flights-schedule?date=2026-11-21&from=1658&to=1662',
-            'Fly Aden public schedule form':'https://customer3.videcom.com/FlyAden/VARS/Public/CustomerPanels/FlightScheduleReportParams.aspx'
-          }
-          for label,url in urls.items():
-              print('SOURCE:',label,'HOST:',urlsplit(url).hostname)
-              try:
-                  req=Request(url,headers={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/125.0 Safari/537.36','Accept':'text/html,application/xhtml+xml','Accept-Language':'ar,en;q=0.8'})
-                  with urlopen(req,timeout=20) as r:
-                      body=r.read(300000).decode('utf-8','replace')
-                      p=Forms();p.feed(body)
-                      print('HTTP:',r.status,'HTML_BYTES:',len(body.encode()),'TYPE:',r.headers.get('Content-Type'))
-                      print('FORMS:',p.forms[:3],'SELECTS:',p.selects[:16],'INPUTS:',p.fields[:16],'TABLES:',p.tables)
-                      print('NO_FLIGHTS_TEXT:',('لا توجد رحلات' in body or 'No Flights' in body))
-              except HTTPError as e: print('HTTP_ERROR:',e.code)
-              except URLError as e: print('NETWORK_ERROR:',str(e.reason)[:120])
-              except Exception as e: print('FAILED:',type(e).__name__,str(e)[:120])
-              print('----')
+          from urllib.request import Request,urlopen
+          from urllib.parse import urlencode
+          from bs4 import BeautifulSoup
+          def pull(url):
+            req=Request(url,headers={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/125.0 Safari/537.36','Accept-Language':'ar,en;q=0.8'})
+            with urlopen(req,timeout=20) as res:return res.read(350000).decode('utf-8','replace')
+          urls=[('yemenia','https://yemenia.com/ar/flights-schedule'),('flyaden','https://customer3.videcom.com/FlyAden/VARS/Public/CustomerPanels/FlightScheduleReportParams.aspx')]
+          for kind,url in urls:
+            print('===== SOURCE',kind)
+            try: content=pull(url)
+            except Exception as e:print('ERROR',type(e).__name__,str(e)[:100]);continue
+            soup=BeautifulSoup(content,'html.parser')
+            for form in soup.find_all('form')[:3]:print('FORM',{'action':form.get('action'),'method':form.get('method')})
+            for sel in soup.find_all('select')[:8]:
+              options=[(o.get('value',''),o.get_text(' ',strip=True)) for o in sel.find_all('option')]
+              print('SELECT',sel.get('name'),sel.get('id'),'onchange',str(sel.get('onchange'))[:120],'OPTIONS',len(options),'VALUES',options[:38])
+            for inp in soup.find_all('input')[:35]:
+              typ=inp.get('type','text')
+              if typ=='hidden':print('HIDDEN',inp.get('name'),'value_len',len(inp.get('value','')))
+              else:print('INPUT',inp.get('name'),inp.get('id'),typ,'onclick',str(inp.get('onclick'))[:130],'value',str(inp.get('value',''))[:70])
+            for b in soup.find_all('button')[:15]:print('BUTTON',b.get('name'),b.get('id'),b.get('type'),'TEXT',b.get_text(' ',strip=True)[:80])
+            if kind=='yemenia':
+              selects=soup.find_all('select')
+              if len(selects)>1:
+                def choose(sel,w):return next(((o.get('value'),o.get_text(' ',strip=True)) for o in sel.find_all('option') if w in o.get_text(' ',strip=True)),None)
+                a,b=choose(selects[0],'عدن'),choose(selects[1],'جدة')
+                print('ADE_JED_SELECTS',a,b)
+                if a and b and a[0] and b[0]:
+                  for date in ('2026-11-20','2026-12-15'):
+                    p=url+'?'+urlencode({'from':a[0],'to':b[0],'date':date})
+                    try:
+                      result=BeautifulSoup(pull(p),'html.parser')
+                      print('QUERY',date,'no_flights',('لا توجد رحلات' in result.get_text(' ',strip=True)), 'tables',len(result.find_all('table')))
+                      content_text=result.get_text(' ',strip=True)
+                      ix=content_text.find('بحث بجدول الرحلات')
+                      print('RESULT_CONTEXT',content_text[max(ix,0):max(ix,0)+380])
+                    except Exception as e:print('QUERY_ERROR',date,str(e)[:120])
+            print('===== END',kind)
           PY
