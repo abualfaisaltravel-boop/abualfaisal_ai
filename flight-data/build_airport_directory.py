@@ -51,7 +51,8 @@ for row in rows:
     iata=row.get('iata_code','').strip().upper()
     if not re.fullmatch(r'[A-Z]{3}',iata):continue
     kind=row.get('type')
-    if kind=='closed' or (kind not in ('large_airport','medium_airport') and row.get('scheduled_service')!='yes' and iata not in PREFERRED):continue
+    if kind not in ('large_airport','medium_airport','small_airport'):continue
+    if kind=='small_airport' and row.get('scheduled_service')!='yes' and iata not in PREFERRED:continue
     city=(row.get('municipality') or '').strip()
     name=(row.get('name') or '').strip()
     country=(row.get('iso_country') or '').strip()
