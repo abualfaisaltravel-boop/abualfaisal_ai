@@ -1,7 +1,7 @@
 {
-  "updatedOn": "2026-11-11",
-  "retrievedAt": "2026-11-11T22:40:38+03:00",
-  "validUntil": "2026-11-12T16:40:38+03:00",
+  "updatedOn": "2026-11-12",
+  "retrievedAt": "2026-11-12T10:20:18+03:00",
+  "validUntil": "2026-11-13T04:20:18+03:00",
   "sourceStatus": {
     "aden": {
       "state": "ok",
@@ -20,32 +20,6 @@
     {
       "carrier": "aden",
       "from": "ADE",
-      "to": "CAI",
-      "date": "2026-11-11",
-      "flightNo": "DH0102",
-      "departure": "08:00",
-      "arrival": "10:30",
-      "stops": 0,
-      "arrivalNextDay": false,
-      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
-      "sourceUrl": "https://fly-aden.com/"
-    },
-    {
-      "carrier": "aden",
-      "from": "CAI",
-      "to": "ADE",
-      "date": "2026-11-11",
-      "flightNo": "DH0101",
-      "departure": "11:30",
-      "arrival": "16:00",
-      "stops": 0,
-      "arrivalNextDay": false,
-      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
-      "sourceUrl": "https://fly-aden.com/"
-    },
-    {
-      "carrier": "aden",
-      "from": "ADE",
       "to": "JED",
       "date": "2026-11-12",
       "flightNo": "DH0200",
@@ -898,6 +872,58 @@
       "arrival": "16:00",
       "stops": 0,
       "arrivalNextDay": false,
+      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
+      "sourceUrl": "https://fly-aden.com/"
+    },
+    {
+      "carrier": "aden",
+      "from": "ADE",
+      "to": "JED",
+      "date": "2026-12-03",
+      "flightNo": "DH0200",
+      "departure": "10:00",
+      "arrival": "12:00",
+      "stops": 0,
+      "arrivalNextDay": false,
+      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
+      "sourceUrl": "https://fly-aden.com/"
+    },
+    {
+      "carrier": "aden",
+      "from": "JED",
+      "to": "ADE",
+      "date": "2026-12-03",
+      "flightNo": "DH0201",
+      "departure": "13:00",
+      "arrival": "15:00",
+      "stops": 0,
+      "arrivalNextDay": false,
+      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
+      "sourceUrl": "https://fly-aden.com/"
+    },
+    {
+      "carrier": "aden",
+      "from": "ADE",
+      "to": "DMM",
+      "date": "2026-12-03",
+      "flightNo": "DH0210",
+      "departure": "20:00",
+      "arrival": "22:45",
+      "stops": 0,
+      "arrivalNextDay": false,
+      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
+      "sourceUrl": "https://fly-aden.com/"
+    },
+    {
+      "carrier": "aden",
+      "from": "DMM",
+      "to": "ADE",
+      "date": "2026-12-03",
+      "flightNo": "DH0211",
+      "departure": "23:45",
+      "arrival": "02:30",
+      "stops": 0,
+      "arrivalNextDay": true,
       "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
       "sourceUrl": "https://fly-aden.com/"
     }
