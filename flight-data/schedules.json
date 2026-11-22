@@ -1,15 +1,16 @@
 {
-  "updatedOn": "2026-11-21",
-  "retrievedAt": "2026-11-21T22:22:51+03:00",
-  "validUntil": "2026-11-22T16:22:51+03:00",
+  "updatedOn": "2026-11-22",
+  "retrievedAt": "2026-11-22T09:59:04+03:00",
+  "validUntil": "2026-11-23T03:59:04+03:00",
   "sourceStatus": {
     "aden": {
       "state": "ok",
-      "routesChecked": 5,
+      "routesChecked": 4,
       "errors": [
         "ADE-JED: HTTPError 404 Client Error: Not Found for url: https://customer3.videcom.com/404.html?aspx",
         "ADE-DMM: HTTPError 404 Client Error: Not Found for url: https://customer3.videcom.com/404.html?aspx",
-        "CAI-ADE: HTTPError 404 Client Error: Not Found for url: https://customer3.videcom.com/404.html?aspx"
+        "CAI-ADE: HTTPError 404 Client Error: Not Found for url: https://customer3.videcom.com/404.html?aspx",
+        "AMM-ADE: HTTPError 404 Client Error: Not Found for url: https://customer3.videcom.com/404.html?aspx"
       ]
     },
     "yemenia": {
@@ -23,51 +24,12 @@
   "schedules": [
     {
       "carrier": "aden",
-      "from": "JED",
-      "to": "ADE",
-      "date": "2026-11-21",
-      "flightNo": "DH0201",
-      "departure": "13:00",
-      "arrival": "15:00",
-      "stops": 0,
-      "arrivalNextDay": false,
-      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
-      "sourceUrl": "https://fly-aden.com/"
-    },
-    {
-      "carrier": "aden",
-      "from": "ADE",
-      "to": "CAI",
-      "date": "2026-11-21",
-      "flightNo": "DH0104",
-      "departure": "17:00",
-      "arrival": "19:30",
-      "stops": 0,
-      "arrivalNextDay": false,
-      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
-      "sourceUrl": "https://fly-aden.com/"
-    },
-    {
-      "carrier": "aden",
       "from": "ADE",
       "to": "AMM",
       "date": "2026-11-22",
       "flightNo": "DH0300",
       "departure": "10:00",
       "arrival": "13:30",
-      "stops": 0,
-      "arrivalNextDay": false,
-      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
-      "sourceUrl": "https://fly-aden.com/"
-    },
-    {
-      "carrier": "aden",
-      "from": "AMM",
-      "to": "ADE",
-      "date": "2026-11-22",
-      "flightNo": "DH0301",
-      "departure": "14:30",
-      "arrival": "18:00",
       "stops": 0,
       "arrivalNextDay": false,
       "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
@@ -218,19 +180,6 @@
     },
     {
       "carrier": "aden",
-      "from": "AMM",
-      "to": "ADE",
-      "date": "2026-11-29",
-      "flightNo": "DH0301",
-      "departure": "14:30",
-      "arrival": "18:00",
-      "stops": 0,
-      "arrivalNextDay": false,
-      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
-      "sourceUrl": "https://fly-aden.com/"
-    },
-    {
-      "carrier": "aden",
       "from": "DMM",
       "to": "ADE",
       "date": "2026-11-29",
@@ -374,19 +323,6 @@
     },
     {
       "carrier": "aden",
-      "from": "AMM",
-      "to": "ADE",
-      "date": "2026-12-06",
-      "flightNo": "DH0301",
-      "departure": "14:30",
-      "arrival": "18:00",
-      "stops": 0,
-      "arrivalNextDay": false,
-      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
-      "sourceUrl": "https://fly-aden.com/"
-    },
-    {
-      "carrier": "aden",
       "from": "DMM",
       "to": "ADE",
       "date": "2026-12-06",
@@ -512,6 +448,32 @@
       "arrival": "19:30",
       "stops": 0,
       "arrivalNextDay": false,
+      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
+      "sourceUrl": "https://fly-aden.com/"
+    },
+    {
+      "carrier": "aden",
+      "from": "ADE",
+      "to": "AMM",
+      "date": "2026-12-13",
+      "flightNo": "DH0300",
+      "departure": "10:00",
+      "arrival": "13:30",
+      "stops": 0,
+      "arrivalNextDay": false,
+      "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
+      "sourceUrl": "https://fly-aden.com/"
+    },
+    {
+      "carrier": "aden",
+      "from": "DMM",
+      "to": "ADE",
+      "date": "2026-12-13",
+      "flightNo": "DH0211",
+      "departure": "23:45",
+      "arrival": "02:30",
+      "stops": 0,
+      "arrivalNextDay": true,
       "sourceLabel": "طيران عدن — الجدول الرسمي المنشور",
       "sourceUrl": "https://fly-aden.com/"
     }
