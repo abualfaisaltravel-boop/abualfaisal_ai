@@ -161,7 +161,7 @@ public class MainActivity extends Activity {
         if (web == null) { super.onBackPressed(); return; }
         String back = "(function(){var d=document.querySelector(\'dialog[open]\');if(d){d.close();return \'handled\'}var a=document.querySelector(\'#nav button.active\');if(a&&a.dataset.page!==\'overview\'){var home=document.querySelector(\'#nav button[data-page=\\\"overview\\\"]\');if(home){home.click();return \'handled\'}}return \'native\'})()";
         web.evaluateJavascript(back, value -> {
-            if ("\\\"handled\\\"".equals(value)) return;
+            if ("\"handled\"".equals(value)) return;
             if (web.canGoBack()) web.goBack();
             else MainActivity.super.onBackPressed();
         });
