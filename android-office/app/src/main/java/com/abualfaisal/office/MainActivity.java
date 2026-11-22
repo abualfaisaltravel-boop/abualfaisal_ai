@@ -46,9 +46,10 @@ public class MainActivity extends Activity {
         root.setBackgroundColor(Color.WHITE);
         web = new WebView(this);
         web.setBackgroundColor(Color.WHITE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) web.setSafeBrowsingEnabled(true);
+
         WebSettings st = web.getSettings();
         st.setJavaScriptEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) st.setSafeBrowsingEnabled(true);
         st.setDomStorageEnabled(true);
         st.setLoadsImagesAutomatically(true);
         st.setSupportZoom(false);
