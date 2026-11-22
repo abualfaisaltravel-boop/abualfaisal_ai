@@ -8,6 +8,12 @@ on:
       - 'android-office/**'
       - '.github/workflows/build-android-office.yml'
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'android-office/**'
+      - '.github/workflows/build-android-office.yml'
 
 permissions:
   contents: read
