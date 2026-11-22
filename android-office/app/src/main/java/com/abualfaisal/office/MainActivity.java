@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
     private ProgressBar progress;
     private LinearLayout offlineView;
     private ValueCallback<Uri[]> uploadCallback;
+    private boolean pageError = false;
 
     private int dp(float px) {
         return (int) (getResources().getDisplayMetrics().density * px + .5f);
@@ -45,6 +46,7 @@ public class MainActivity extends Activity {
         root.setBackgroundColor(Color.WHITE);
         web = new WebView(this);
         web.setBackgroundColor(Color.WHITE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) web.setSafeBrowsingEnabled(true);
         WebSettings st = web.getSettings();
         st.setJavaScriptEnabled(true);
         st.setDomStorageEnabled(true);
@@ -63,6 +65,10 @@ public class MainActivity extends Activity {
         CookieManager.getInstance().setAcceptThirdPartyCookies(web, true);
         web.setWebViewClient(new WebViewClient() {
             @Override
+            public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon) {
+                pageError = false;
+            }
+            @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri uri = request.getUrl();
                 String host = uri.getHost();
@@ -74,11 +80,15 @@ public class MainActivity extends Activity {
             }
             @Override
             public void onPageFinished(WebView view, String url) {
-                offlineView.setVisibility(View.GONE);
+                if (!pageError) offlineView.setVisibility(View.GONE);
+                CookieManager.getInstance().flush();
             }
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                if (request.isForMainFrame()) offlineView.setVisibility(View.VISIBLE);
+                if (request.isForMainFrame()) {
+                    pageError = true;
+                    offlineView.setVisibility(View.VISIBLE);
+                }
             }
         });
         web.setWebChromeClient(new WebChromeClient() {
@@ -132,6 +142,8 @@ public class MainActivity extends Activity {
     }
     private void openExternal(Uri uri) {
         try {
+            String scheme = uri.getScheme();
+            if (scheme == null || !(scheme.equalsIgnoreCase("https") || scheme.equalsIgnoreCase("mailto") || scheme.equalsIgnoreCase("tel"))) return;
             Intent i = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(i);
         } catch (Exception ignored) {}
@@ -146,8 +158,13 @@ public class MainActivity extends Activity {
     }
     @Override
     public void onBackPressed() {
-        if (web != null && web.canGoBack()) web.goBack();
-        else super.onBackPressed();
+        if (web == null) { super.onBackPressed(); return; }
+        String back = "(function(){var d=document.querySelector(\'dialog[open]\');if(d){d.close();return \'handled\'}var a=document.querySelector(\'#nav button.active\');if(a&&a.dataset.page!==\'overview\'){var home=document.querySelector(\'#nav button[data-page=\\\"overview\\\"]\');if(home){home.click();return \'handled\'}}return \'native\'})()";
+        web.evaluateJavascript(back, value -> {
+            if ("\\\"handled\\\"".equals(value)) return;
+            if (web.canGoBack()) web.goBack();
+            else MainActivity.super.onBackPressed();
+        });
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
